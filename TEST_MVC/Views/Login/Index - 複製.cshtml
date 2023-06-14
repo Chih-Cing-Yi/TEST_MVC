@@ -1,0 +1,68 @@
+﻿@model TEST_MVC.Models.User
+
+@{
+    //Layout = null;
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<script src="~/package/dist/chart.umd.js"></script>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>index</title>
+</head>
+<body>
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @ViewBag.time
+        <form asp-action="index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PassWord" class="control-label"></label>
+                <input asp-for="PassWord" class="form-control" />
+                <span asp-validation-for="PassWord" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="登入" class="btn btn-primary" />
+            </div>
+                @if(ViewData["ErrowMessage"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                      @ViewData["ErrowMessage"]
+                    </div>
+                }
+        </form>
+    </div>
+</div>
+    <canvas id="myChart"></canvas>
+</body>
+</html>
+
+<script>
+const ctx = document.getElementById('myChart');
+const labels = ['一月份', '二月份', '三月份','四月份', '五月份', '六月份', '七月份'];  // 设置 X 轴上对应的标签
+const data = {
+  labels: labels,
+  datasets: [{
+    label: '我的第一个折线图',
+    data: [65, 59, 80, 81, 56, 55, 40],
+    fill: false,
+    borderColor: 'rgb(75, 192, 192)', // 设置线的颜色
+    tension: 0.1
+  }]
+};
+const config = {
+  type: 'line', // 设置图表类型
+  data: data,
+};
+const myChart = new Chart(ctx, config);
+</script>

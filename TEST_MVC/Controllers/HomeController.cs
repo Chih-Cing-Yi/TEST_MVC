@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TEST_MVC.Models;
 
-
-namespace TEST_MVC.Controllers
+namespace WebApplication2.Controllers
 {
     public class HomeController : Controller
     {
@@ -13,7 +13,7 @@ namespace TEST_MVC.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index()
         {
             return View();
         }
@@ -23,8 +23,6 @@ namespace TEST_MVC.Controllers
             return View();
         }
 
-        //緩存的設定
-        //Duration是緩存保存時長
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

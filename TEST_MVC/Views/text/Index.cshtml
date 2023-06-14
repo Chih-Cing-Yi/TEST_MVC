@@ -1,0 +1,112 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-clearmin.min.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/css/roboto.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/css/material-design.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/css/small-n-flat.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/TEST_MVC.styles.css" asp-append-version="true" />
+        <title>Clearmin template</title>
+    </head>
+    <body class="cm-no-transition cm-2-navbar">
+        <div id="cm-menu">
+            <nav class="cm-navbar cm-navbar-primary">
+                <div class="cm-flex"><a href="#" class="cm-logo"></a></div>
+                <div class="btn btn-primary md-menu-white" data-toggle="cm-menu"></div>
+            </nav>
+            @*左側選單*@
+            <div id="cm-menu-content">
+                <div id="cm-menu-items-wrapper">
+                    <div id="cm-menu-scroller">
+                        <ul class="cm-menu-items">
+                            @*伸縮選單*@
+                            <li class="cm-submenu">
+                                <a class="sf-cat">Icons <span class="caret"></span></a>
+                                <ul>
+                                    <li><a href="ico-sf.html">Small-n-flat</a></li>
+                                    <li><a href="ico-md.html">Material Design</a></li>
+                                    <li><a href="ico-fa.html">Font Awesome</a></li>
+                                </ul>
+                            </li>
+                            <li class="cm-submenu">
+                                <a class="sf-cat">Icons <span class="caret"></span></a>
+                                <ul>
+                                    <li><a href="ico-sf.html">Small-n-flat</a></li>
+                                    <li><a href="ico-md.html">Material Design</a></li>
+                                    <li><a href="ico-fa.html">Font Awesome</a></li>
+                                </ul>
+                            </li>
+                            @*單選*@
+                            <li><a href="notepad.html" class="sf-notepad">Text Editor</a></li>
+                            <li><a href="login.html" class="sf-lock-open">Login page</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <header id="cm-header">
+            <nav class="cm-navbar cm-navbar-primary">
+                <div class="btn btn-primary md-menu-white hidden-md hidden-lg" data-toggle="cm-menu"></div>
+                <div class="cm-flex">
+                  @*NAV內容*@
+                  @ViewData["Title"]
+                </div>
+                <div class="dropdown pull-right">
+                    <button class="btn btn-primary md-account-circle-white" data-toggle="dropdown"></button>
+                    <ul class="dropdown-menu">
+                        <li class="disabled text-center">
+                            <a style="cursor:default;"><strong>John Smith</strong></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-cog"></i> Settings</a>
+                        </li>
+                        <li>
+                            <a href="login.html"><i class="fa fa-fw fa-sign-out"></i> Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            @*麵包屑*@
+            <nav class="cm-navbar cm-navbar-default cm-navbar-slideup">
+                <div class="cm-flex">
+                    <div class="cm-breadcrumb-container">
+                        <ol class="breadcrumb">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li><a href="#">Profile</a></li>
+                            <li class="active">Lorem Page</li>
+                        </ol>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+            <footer class="cm-footer"><span class="pull-left"></span><span class="pull-right">Simon Chih &copy; 2023</span></footer>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/assets/js/jquery.mousewheel.min.js"></script>
+        <script src="~/assets/js/jquery.cookie.min.js"></script>
+        <script src="~/assets/js/fastclick.min.js"></script>
+        <script src="~/assets/js/bootstrap.min.js"></script>
+        <script src="~/assets/js/clearmin.min.js"></script>
+@*        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/axios/axios.min.js"></script>
+    </body>
+</html>

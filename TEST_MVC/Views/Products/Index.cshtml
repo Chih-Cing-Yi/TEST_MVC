@@ -1,0 +1,111 @@
+﻿@model IEnumerable<TEST_MVC.Models.ViewModels.ProductVM>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Bootstrap4.Core;
+@using TEST_MVC.Models;
+@inject WebAPIContext _db
+
+@{
+    ViewData["Title"] = "商品列表";
+    var ProductTypeList =  _db.ProductTypes.ToList();
+}
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> 新增</a>
+</p>
+
+<form asp-action="index" class="form-inline">
+    <div class="form-group">
+        <label>商品類別:</label>     
+        <select id="searchType" name="type" class="form-control"  >
+            <option value="">ALL</option>
+            @foreach(var item in ProductTypeList)
+            {
+            <option value="@item.Id">@item.name</option>
+            }
+        </select>
+        <label>商品名稱:</label>     
+        <input id="searchName" name="name" class="form-control" value="@ViewData["name"]"/>
+        <button class="btn btn-primary" ><i class="fa fa-search"></i> 查詢</button>
+    </div>
+</form>
+
+<table class="table  table-striped">
+    <thead>
+        <tr>
+            <th>
+                編號
+            </th>
+            <th>
+                商品名稱
+            </th>
+             <th>
+                商品類別
+            </th>
+            <th>
+                價格
+            </th>
+            <th>
+               庫存
+            </th>
+            <th>
+                圖片
+            </th>
+            <th>
+                建檔日期
+            </th>
+            <th>
+                修改日期
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+                <img src="@("/images/"+item.ImageUrl)"  alt="沒有圖片"  width="60" height="60" >
+            </td>
+            <td>
+                @item.CreatDate.ToString("yyyy/MM/dd")
+            </td>
+            <td>
+                  @item.EditDate?.ToString("yyyy/MM/dd")
+            </td>
+            <td>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i> 編輯</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-minus"></i> 刪除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script>
+    //讓select選取搜尋類別(IIFE)
+    (()=>{
+        document.querySelector('select#searchType').value='@ViewData["type"]'
+    })()
+</script>
+
+
+ @Html.PagedListPager((IPagedList)Model,x=>Url.Action("Index",new{Page= x,type=ViewData["type"],name=ViewData["name"]}),Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
+                

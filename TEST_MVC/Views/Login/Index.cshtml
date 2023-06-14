@@ -1,0 +1,65 @@
+﻿@model TEST_MVC.Models.User
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+        <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-clearmin.min.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/css/roboto.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Login</title>
+    </head>
+    <body>
+
+    <div class="text-center" style="padding:90px 0 30px 0;background:#fff;border-bottom:1px solid #ddd">
+    <h1 style="color:forestgreen"><i class="fa fa-fw fa-leaf"></i>Login</h1>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-lg-3" style="margin:40px auto; float:none;">
+        <form asp-action="index" onsubmit="return checkForm()">
+    <div class="col-xs-12">
+            <div class="form-group">
+	    <div class="input-group">
+	        <div class="input-group-addon"><i class="fa fa-fw fa-user"></i></div>
+	        <input id="name" type="text" asp-for="Name" class="form-control" placeholder="Username">
+	    </div>
+            </div>
+            <div class="form-group">
+	    <div class="input-group">
+	        <div class="input-group-addon"><i class="fa fa-fw fa-lock"></i></div>
+	        <input id="password" type="password" asp-for="PassWord" class="form-control" placeholder="Password">
+	    </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <button type="submit" class="btn btn-block btn-primary">Sign in</button>
+            <br />
+            <div id="message" class="alert @ViewData["class"]">
+               @ViewData["ErrowMessage"]
+            </div>
+        </div>
+        </form>
+    </div>
+    </body>
+</html>
+
+<script>
+    //確認輸入欄位
+    const checkForm = () =>{
+        const inputName = document.querySelector('input#name')
+        const inputPassword = document.querySelector('input#password')
+        const divMessage = document.querySelector('div#message')
+        if(!inputName.value || !inputPassword.value){
+            divMessage.classList.add('alert-danger')
+            divMessage.innerHTML='請輸入帳號密碼'
+            return false
+        }else{
+            return true
+        }
+    }
+</script>

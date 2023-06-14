@@ -1,0 +1,240 @@
+﻿@using TEST_MVC.Models;
+@model TEST_MVC.Models.ViewModels.OrderVM
+@inject WebAPIContext _db
+
+@{
+    ViewData["Title"] = "新增訂單";
+    var ProductList = _db.Products.ToList();
+    var Customer = _db.Customers.ToList();
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" onsubmit="return checkForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderM[0].CustomerId" class="control-label"></label>
+                <select asp-for="OrderM[0].CustomerId" class="form-control" >
+                    <option value=""></option>
+                        @foreach(var item2 in Customer)
+                        {
+                            <option value="@item2.Id">@item2.Name</option>
+                        }
+                </select>
+                <span asp-validation-for="OrderM[0].CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group"> 
+                <label asp-for="OrderM[0].TotalPrice" class="control-label"></label>
+                <input id="OrderTotalPrice" asp-for="OrderM[0].TotalPrice" class="form-control"  readonly/>
+                <span asp-validation-for="OrderM[0].TotalPrice" class="text-danger"></span>
+            </div>
+               @*明細表*@
+                <table class="table">
+                        <tr>
+                            <td style="min-width:7.5rem">商品名稱</td>
+                            <td style="min-width:5.5rem">價格</td>    
+                            <td style="min-width:5.5rem">數量</td>                                                  
+                            <td style="min-width:5.5rem">小計</td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <select id="ProductId" class="form-control" onchange="getPrice()" >
+                                    <option value=""></option>
+                                    @foreach(var item in ProductList)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </td>
+                            <td><input id="Price" class="form-control"  onchange="Calculate()" readonly/></td>
+                            <td >
+                                <select id="QTY" class="form-control"  onchange="Calculate()"  >
+                                    <option value=""></option>
+                                    @for(var i =1; i < 101; i++)
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                </select>
+                             </td>
+                            <td><input id="Total"  class="form-control"  readonly/></td>     
+                           <td><a  id="btnDetails" class="btn btn-primary" >+</a></td>
+                        </tr>
+                    <tbody  id="detail">
+                    </tbody>
+                </table>
+                <br />
+                <div class="form-group">
+                    <button  class="btn btn-primary" ><i class="fa fa-save"></i> 儲存</button>
+                 </div>
+         </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@*錯誤訊息*@
+<div style='position:fixed; z-index:999; top:0;right: 0;min-width:200px'>
+    <div id="PageAlert" class="alert alert-danger alert-dismissible fade in shadowed" hidden>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+        </button>
+        <strong>"未輸入明細"</strong>
+    </div>
+</div>
+
+<script>
+    //綁定明細輸入框的值
+    const inputProductId = document.querySelector('#ProductId')
+    const inputPrice = document.querySelector('#Price')
+    const inputQTY = document.querySelector('#QTY')
+    const inputTotal = document.querySelector('#Total')
+     //宣告陣列
+     let detailData = []//明細內容
+     let detailTable =[]//HTML顯示陣列
+     //宣告變數
+     let ProductsName='' //取得商品名稱
+     let OrderTotalPrice=''//訂單總金額
+     //新增明細資料方法
+    const addDetail=()=>{
+        //防呆
+        if(!inputProductId.value || !inputPrice.value || !inputQTY.value || !inputTotal.value){return console.log('不可新增空白')}
+        //新增資料
+        detailData.push({
+        'ProductId':inputProductId.value,
+        'Price':inputPrice.value,
+        'QTY':inputQTY.value,
+        'Total':inputTotal.value,
+        'ProductName':ProductsName,})
+        //顯示明細HTML
+        detailTable = detailData.map(function(e,index){
+            return `
+            <tr>
+                <td>
+                 <input name="OrderD[${index}].ProductId" class="form-control" value="${e.ProductId}" type="hidden" readonly/>
+                 <input  class="form-control" value="${e.ProductName}" readonly/>
+              </td>
+             <td>
+                    <input name="OrderD[${index}].Price" class="form-control" value="${e.Price}" readonly/>
+              </td>
+              <td>
+                    <input name="OrderD[${index}].QTY" class="form-control" value="${e.QTY}" readonly/>
+               </td>
+                <td>
+                    <input name="OrderD[${index}].Total" class="form-control" value="${e.Total}" readonly/> 
+                </td>
+                <td>
+                    <button class="btn btn-danger">X</button>           
+                </td>
+            </tr>`
+        })
+        //展示到頁面
+        let details =document.querySelector('#detail')
+        details.innerHTML =  detailTable.join('');
+        //計算總價
+        OrderTotalPrice = detailData.map(function(e){return e.Total}).reduce((a,b)=>Number(a)+Number(b))
+        //寫進欄位
+        const  inputTotalPrice = document.querySelector('#OrderTotalPrice')
+        inputTotalPrice.value = OrderTotalPrice
+        console.log(detailTable)
+    }         
+    //計算小計
+    const Calculate = ()=>{
+        if(Price != null && QTY != null){
+            inputTotal.value =  Number(inputPrice.value)*Number(inputQTY.value)
+        }
+    }
+    //新增明細按鈕
+    const btnDetailAdd = document.querySelector('a#btnDetails')
+    btnDetailAdd.addEventListener('click',(e)=>{
+        e.preventDefault()//取消預設事件
+        addDetail()//引用新增明細資料方法
+        //console.log(detailData)
+        //清空欄位
+        inputProductId.value = ''
+        inputPrice.value = ''
+        inputQTY.value = ''
+        inputTotal.value = ''
+    })
+     //刪除明細按鈕
+    const btnDetailDel = document.querySelector('tbody#detail')
+    btnDetailDel.addEventListener('click',(e)=>{
+        console.log(e.target)
+        if(e.target.tagName === 'BUTTON'){
+            e.preventDefault()//取消預設事件
+            //console.log(e.target.dataset.id)//取得data-id
+            detailData.splice(e.target.dataset.id,1)
+            //重新渲染
+            if(detailData.length>0){
+                //計算總價
+                OrderTotalPrice = detailData.map(function(e){return e.Total}).reduce((a,b)=>Number(a)+Number(b))
+                //寫進欄位
+                const  inputTotalPrice = document.querySelector('#OrderTotalPrice')
+                inputTotalPrice.value = OrderTotalPrice
+                //重新渲染
+                detailTable = detailData.map(function(e,index){
+                    return `
+                    <tr>
+                        <td>
+                            <input name="OrderD[${index}].ProductId" class="form-control" value="${e.ProductId}" type="hidden" readonly/>
+                            <input  class="form-control" value="${e.ProductName}" readonly/>
+                        </td>
+                        <td>
+                            <input name="OrderD[${index}].Price" class="form-control" value="${e.Price}" readonly/>
+                        </td>
+                        <td>
+                            <input name="OrderD[${index}].QTY" class="form-control" value="${e.QTY}" readonly/>
+                        </td>
+                        <td>
+                            <input name="OrderD[${index}].Total" class="form-control" value="${e.Total}" readonly/> 
+                        </td>
+                        <td>
+                            <button data-id="${index}" class="btn btn-danger">X</button>           
+                        </td>
+                    </tr>`
+                })
+                //展示到頁面
+                let details =document.querySelector('#detail')
+                details.innerHTML =  detailTable.join('');
+            }else{
+                e.target.parentElement.parentElement.innerHTML=null
+                const  inputTotalPrice = document.querySelector('#OrderTotalPrice')
+                inputTotalPrice.value = 0
+            }
+        }
+    })
+    //確認輸入欄位
+    const checkForm = () =>{
+        if(detailData.length === 0){
+            document.querySelector('div#PageAlert').hidden=false
+             let n = setInterval(()=>{
+                document.querySelector('div#PageAlert').hidden=true
+                if(document.querySelector('div#PageAlert').hidden == true){
+                    clearInterval(n)
+                }
+            },2000)
+            return false
+        }else{
+            return true
+        }
+    }
+    //http請求 商品資料並計算小計
+    const getPrice =()=>{ 
+            if(!inputProductId.value){return inputPrice.value = null  , ProductsName=null}
+            axios.get(`https://localhost:7088/Products/Data?Id=${inputProductId.value}`)
+            //axios.get(`../Products/Data?Id=${inputProductId.value}`)
+            .then( (response) =>{
+                inputPrice.value = response.data.price 
+                ProductsName = response.data.name 
+                Calculate()
+            })
+            //.then( (response) =>console.log(response.data))
+            .catch( inputPrice.value = null , ProductsName=null)
+    }
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

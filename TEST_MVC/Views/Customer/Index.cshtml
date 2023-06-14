@@ -1,0 +1,75 @@
+﻿@model IEnumerable<TEST_MVC.Models.Customer>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Bootstrap4.Core;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> 新增</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreactDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreactUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EditDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EditUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Addr)
+            </td>
+            <td>
+                @item.CreactDate?.ToString("yyyy/MM/dd")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreactUser)
+            </td>
+            <td>
+                @item.EditDate?.ToString("yyyy/MM/dd")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EditUser)
+            </td>
+            <td>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i> 編輯</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-minus"></i> 刪除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@Html.PagedListPager((IPagedList)Model,x=>Url.Action("Index",new{Page= x}),Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
