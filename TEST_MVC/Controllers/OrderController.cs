@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using X.PagedList;
 
 namespace TEST_MVC.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         //資料庫連線(上efcore 下dapper)
@@ -164,7 +166,7 @@ namespace TEST_MVC.Controllers
                     item.CustomerId = orderVM.OrderM[0].CustomerId;
                     item.TotalPrice = orderVM.OrderM[0].TotalPrice;
                     item.EditDate = DateTime.Now;
-                    item.CreactUser = "Simon";
+                    item.EditUser = "Simon";
                     //明細單
                     //查詢要修改的值(明細表)
                     //先刪除

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel;
@@ -8,7 +9,7 @@ using X.PagedList;
 
 namespace TEST_MVC.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly WebAPIContext _db;

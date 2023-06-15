@@ -1,7 +1,10 @@
-﻿@model TEST_MVC.Models.Product
+﻿@using TEST_MVC.Models;
+@model TEST_MVC.Models.Product
+@inject WebAPIContext _db
 
 @{
     ViewData["Title"] = "新增商品";
+    var Customer = _db.Customers.ToList();
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -28,9 +31,11 @@
             <div class="form-group">
                 <label asp-for="ProductTypeId" class="control-label"></label>
                 <select asp-for="ProductTypeId" class="form-control">
-                <option value="1">Please select 1</option>
-                <option value="2">Please select 2</option>
-                <option value="3">Please select 3</option>
+                    <option value=""></option>
+                    @foreach(var item2 in Customer)
+                    {
+                        <option value="@item2.Id">@item2.Name</option>
+                    }
                 </select>
                 <span asp-validation-for="ProductTypeId" class="text-danger"></span>
             </div>

@@ -51,8 +51,8 @@
                                 </ul>
                             </li>
                             @*單選*@
-                            <li><a asp-controller="Login" asp-action="Index" class="sf-lock-open">Login In</a></li>
-                            <li><a asp-controller="Login" asp-action="Logout" class="sf-lock-open">Login Out</a></li>
+                            @*<li><a asp-controller="Login" asp-action="Index" class="sf-lock-open">Login In</a></li>*@
+                            <li><a asp-controller="Login" asp-action="Logout" class="sf-lock">Login Out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                   @*NAV內容*@
                   @*<h1 style="font-size:20px">@ViewData["Title"]</h1>*@
                 </div>
-                <div class="dropdown pull-right">
+@*                <div class="dropdown pull-right">
                     <button class="btn btn-primary md-account-circle-white" data-toggle="dropdown"></button>
                     <ul class="dropdown-menu">
                         <li class="disabled text-center">
@@ -82,7 +82,7 @@
                             <a href="login.html"><i class="fa fa-fw fa-sign-out"></i> Sign out</a>
                         </li>
                     </ul>
-                </div>
+                </div>*@
             </nav>
             @*麵包屑*@
             <nav class="cm-navbar cm-navbar-default cm-navbar-slideup">
