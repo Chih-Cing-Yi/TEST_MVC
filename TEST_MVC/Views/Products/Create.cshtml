@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "新增商品";
-    var Customer = _db.Customers.ToList();
+    var ProductTypes = _db.ProductTypes.ToList();
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -32,9 +32,9 @@
                 <label asp-for="ProductTypeId" class="control-label"></label>
                 <select asp-for="ProductTypeId" class="form-control">
                     <option value=""></option>
-                    @foreach(var item2 in Customer)
+                    @foreach(var item2 in ProductTypes)
                     {
-                        <option value="@item2.Id">@item2.Name</option>
+                        <option value="@item2.Id">@item2.name</option>
                     }
                 </select>
                 <span asp-validation-for="ProductTypeId" class="text-danger"></span>
